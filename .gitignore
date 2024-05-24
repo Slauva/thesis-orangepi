@@ -1,0 +1,8 @@
+/venv
+/static/*.*
+/.idea
+/.vscode
+/src/**/__pycache__
+!/static/.gitkeep
+/src/logs/**
+!/src/logs/.gitkeep
