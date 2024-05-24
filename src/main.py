@@ -19,18 +19,15 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-# @app.post("/upload")
-# async def upload_file(file: UploadFile):
-#     content = await file.read()
-#     async with aiofiles.open(f"static/{file.filename}", "wb") as f:
-#         await f.write(content)
-
 class SessionDTO(BaseModel):
     filename: str
+
+
 @app.post("/session/start")
 async def session_start(data: SessionDTO):
     task = session.delay(data.filename)
     return task.id
+
 
 @app.get("/session/{task_id}")
 async def get_session(task_id):
@@ -42,6 +39,7 @@ async def get_session(task_id):
     }
     return result
 
+
 @app.delete("/session/{task_id}")
 async def delete_session(task_id):
     task_result = session.AsyncResult(task_id)
@@ -52,6 +50,7 @@ async def delete_session(task_id):
         "task_result": task_result.result
     }
     return result
+
 
 @app.delete("/file/{filename}")
 async def delete_file(filename):
